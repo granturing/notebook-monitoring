@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Results</title>
+  <style>
+  {{ highlight_css }}
+  </style>
+</head>
+
+<body>
+  <h1>WARNING: Notebook code may have changed since the commands were logged</h1>
+  <h2>Categories Reported</h2>
+  <ul>
+  {% for category in categories %}
+    <li>
+      <h3>{{ category }}</h3>
+    </li>
+  {% endfor %}
+  </ul>
+  
+  {% for item in items %}
+  <fieldset>
+    <legend>{{ item["name"] }}</legend>
+    <a href="/#notebook/{{ item["notebook_id"] }}/command/{{ item["command_id"] }}">{{ item["notebook_name"] }}</a>
+    <p/>
+    {{ item["email"] }}
+    <p/>
+    {{ item["timestamp"] }}
+    {{ item["code_sample"] }}
+  </fieldset>
+  {% endfor %}
+</body>
+</html>
