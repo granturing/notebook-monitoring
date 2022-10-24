@@ -15,12 +15,15 @@ from pyspark.sql import Window
 
 # COMMAND ----------
 
-lookback_days = 1 # adjust accordingly, could be a job parameter
+# adjust accordingly, could be job parameters
+
+lookback_days = 1
+audit_log_table = "log_data.workspace_audit_logs"
 
 # COMMAND ----------
 
 # get all successful notebook commands for the last day
-commands = (spark.read.table("log_data.workspace_audit_logs")
+commands = (spark.read.table(audit_log_table)
             .filter(f"serviceName = 'notebook' and actionName in ('runCommand', 'attachNotebook') and date >= current_date() - interval {lookback_days} days")
             .filter("(requestParams.path is not null or requestParams.commandText not like '\%%')"))
 
@@ -104,7 +107,7 @@ for row in pdf_combined.itertuples():
         os.makedirs(code_path, exist_ok=True)
 
         with open(f"{code_path}/code.py", "a") as f:
-            # we add a command_id to be able to link directly to the cell
+            # we add a command_id to be able to link directly to the cell in the report
             f.write(f"## command_id: {command_id}\n")
             f.write(f"{command_text}\n\n")
 
@@ -158,12 +161,6 @@ if run.returncode != 0:
 
 # you may also want to copy the code so that SAPP can show the affected lines of code
 # shutil.copytree(code_base_path, "/dbfs/tmp/pysa-code-scanned")
-
-# COMMAND ----------
-
-t = ["a", "b", "c", "d"]
-
-t[1:4]
 
 # COMMAND ----------
 
