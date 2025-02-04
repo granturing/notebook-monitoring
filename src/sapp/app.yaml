@@ -1,0 +1,7 @@
+command: [
+  "python",
+  "run.py"
+]
+env:
+  - name: "SAPP_SERVER_PORT"
+    value: 8000
